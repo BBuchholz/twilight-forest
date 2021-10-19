@@ -5,6 +5,10 @@
   let totalTodos = todos.length;
   let completedTodos = todos.filter(todo => todo.completed).length;
 
+  function removeTodo(todo) {
+  	todos = todos.filter(t => t.id !== todo.id);
+  }
+
 </script>
 
 
@@ -24,8 +28,10 @@
 			autocomplete="off" 
 			class="input input__lg" />
 	    <button 
-	    	type="submit" disabled="" 
-	        class="btn btn__primary btn__lg">
+	    	type="submit" 
+	    	disabled="" 
+	      class="btn btn__primary btn__lg"
+      >
 	    	Add
 	    </button>
 	</form>
@@ -74,7 +80,9 @@
           <input 
           	type="checkbox" 
           	id="todo-{todo.id}" 
-          	checked={todo.completed}/>
+          	on:click={() => todo.completed = !todo.completed}
+          	checked={todo.completed}
+        	/>
 
           <label 
           	for="todo-{todo.id}" 
@@ -97,7 +105,9 @@
           
           <button 
           	type="button" 
-          	class="btn btn__danger">
+          	class="btn btn__danger"
+          	on:click={ () => removeTodo(todo) } 
+        	>
             
             Delete 
             <span class="visually-hidden">{todo.name}</span>

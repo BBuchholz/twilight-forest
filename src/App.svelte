@@ -25,7 +25,7 @@
 
 </script>
 
-<Todos todos={todos} />
+<Todos {todos} />
 
 <style>
 	main {
