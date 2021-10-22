@@ -2,11 +2,27 @@
 
 	export let todos = [];
 
-  let totalTodos = todos.length;
-  let completedTodos = todos.filter(todo => todo.completed).length;
+	let newTodoName = '';
+
+  $: totalTodos = todos.length;
+  $: completedTodos = todos.filter(todo => todo.completed).length;
+
+	let newTodoId;
+	$: {
+		if (totalTodos === 0) {
+			newTodoId = 1;
+		} else {
+			newTodoId = Math.max(...todos.map(t => t.id)) + 1;
+		}
+	}
 
   function removeTodo(todo) {
   	todos = todos.filter(t => t.id !== todo.id);
+  }
+
+  function addTodo() {
+  	todos = [...todos, { id: newTodoId, name: newTodoName, completed: false }];
+  	newTodoName = '';
   }
 
 </script>
@@ -16,13 +32,14 @@
 <div class="todoapp stack-large">
 
 	<!-- NewTodo -->
-	<form>
+	<form on:submit|preventDefault={addTodo}>
 		<h2 class="label-wrapper">
 			<label for="todo-0" class="label__lg">
 				What needs to be done?
 			</label>
 		</h2>
 		<input 
+			bind:value={newTodoName}
 			type="text" 
 			id="todo-0" 
 			autocomplete="off" 
