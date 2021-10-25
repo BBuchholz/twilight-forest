@@ -68,6 +68,9 @@ var app = (function () {
     function set_input_value(input, value) {
         input.value = value == null ? '' : value;
     }
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? 'add' : 'remove'](name);
+    }
     function custom_event(type, detail, bubbles = false) {
         const e = document.createEvent('CustomEvent');
         e.initCustomEvent(type, bubbles, false, detail);
@@ -473,13 +476,13 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[10] = list[i];
-    	child_ctx[11] = list;
-    	child_ctx[12] = i;
+    	child_ctx[15] = list[i];
+    	child_ctx[16] = list;
+    	child_ctx[17] = i;
     	return child_ctx;
     }
 
-    // (140:1) {:else}
+    // (156:1) {:else}
     function create_else_block(ctx) {
     	let t;
 
@@ -499,14 +502,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(140:1) {:else}",
+    		source: "(156:1) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (89:1) {#each todos as todo, index (todo.id)}
+    // (105:1) {#each filterTodos(filter, todos) as todo(todo.id)}
     function create_each_block(key_1, ctx) {
     	let li;
     	let div2;
@@ -516,7 +519,7 @@ var app = (function () {
     	let input_checked_value;
     	let t0;
     	let label;
-    	let t1_value = /*todo*/ ctx[10].name + "";
+    	let t1_value = /*todo*/ ctx[15].name + "";
     	let t1;
     	let label_for_value;
     	let t2;
@@ -524,24 +527,24 @@ var app = (function () {
     	let button0;
     	let t3;
     	let span0;
-    	let t4_value = /*todo*/ ctx[10].name + "";
+    	let t4_value = /*todo*/ ctx[15].name + "";
     	let t4;
     	let t5;
     	let button1;
     	let t6;
     	let span1;
-    	let t7_value = /*todo*/ ctx[10].name + "";
+    	let t7_value = /*todo*/ ctx[15].name + "";
     	let t7;
     	let t8;
     	let mounted;
     	let dispose;
 
-    	function click_handler() {
-    		return /*click_handler*/ ctx[7](/*todo*/ ctx[10], /*each_value*/ ctx[11], /*index*/ ctx[12]);
+    	function click_handler_3() {
+    		return /*click_handler_3*/ ctx[12](/*todo*/ ctx[15], /*each_value*/ ctx[16], /*todo_index*/ ctx[17]);
     	}
 
-    	function click_handler_1() {
-    		return /*click_handler_1*/ ctx[8](/*todo*/ ctx[10]);
+    	function click_handler_4() {
+    		return /*click_handler_4*/ ctx[13](/*todo*/ ctx[15]);
     	}
 
     	const block = {
@@ -568,30 +571,30 @@ var app = (function () {
     			t7 = text(t7_value);
     			t8 = space();
     			attr_dev(input, "type", "checkbox");
-    			attr_dev(input, "id", input_id_value = "todo-" + /*todo*/ ctx[10].id);
-    			input.checked = input_checked_value = /*todo*/ ctx[10].completed;
-    			add_location(input, file, 96, 10, 1939);
-    			attr_dev(label, "for", label_for_value = "todo-" + /*todo*/ ctx[10].id);
+    			attr_dev(input, "id", input_id_value = "todo-" + /*todo*/ ctx[15].id);
+    			input.checked = input_checked_value = /*todo*/ ctx[15].completed;
+    			add_location(input, file, 112, 10, 2448);
+    			attr_dev(label, "for", label_for_value = "todo-" + /*todo*/ ctx[15].id);
     			attr_dev(label, "class", "todo-label");
-    			add_location(label, file, 103, 10, 2127);
+    			add_location(label, file, 119, 10, 2636);
     			attr_dev(div0, "class", "c-cb");
-    			add_location(div0, file, 94, 8, 1909);
+    			add_location(div0, file, 110, 8, 2418);
     			attr_dev(span0, "class", "visually-hidden");
-    			add_location(span0, file, 118, 12, 2402);
+    			add_location(span0, file, 134, 12, 2911);
     			attr_dev(button0, "type", "button");
     			attr_dev(button0, "class", "btn");
-    			add_location(button0, file, 113, 10, 2312);
+    			add_location(button0, file, 129, 10, 2821);
     			attr_dev(span1, "class", "visually-hidden");
-    			add_location(span1, file, 129, 12, 2677);
+    			add_location(span1, file, 145, 12, 3186);
     			attr_dev(button1, "type", "button");
     			attr_dev(button1, "class", "btn btn__danger");
-    			add_location(button1, file, 122, 10, 2503);
+    			add_location(button1, file, 138, 10, 3012);
     			attr_dev(div1, "class", "btn-group");
-    			add_location(div1, file, 111, 8, 2267);
+    			add_location(div1, file, 127, 8, 2776);
     			attr_dev(div2, "class", "stack-small");
-    			add_location(div2, file, 92, 6, 1866);
+    			add_location(div2, file, 108, 6, 2375);
     			attr_dev(li, "class", "todo");
-    			add_location(li, file, 90, 4, 1835);
+    			add_location(li, file, 106, 4, 2344);
     			this.first = li;
     		},
     		m: function mount(target, anchor) {
@@ -617,8 +620,8 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "click", click_handler, false, false, false),
-    					listen_dev(button1, "click", click_handler_1, false, false, false)
+    					listen_dev(input, "click", click_handler_3, false, false, false),
+    					listen_dev(button1, "click", click_handler_4, false, false, false)
     				];
 
     				mounted = true;
@@ -627,22 +630,22 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*todos*/ 1 && input_id_value !== (input_id_value = "todo-" + /*todo*/ ctx[10].id)) {
+    			if (dirty & /*filterTodos, filter, todos*/ 25 && input_id_value !== (input_id_value = "todo-" + /*todo*/ ctx[15].id)) {
     				attr_dev(input, "id", input_id_value);
     			}
 
-    			if (dirty & /*todos*/ 1 && input_checked_value !== (input_checked_value = /*todo*/ ctx[10].completed)) {
+    			if (dirty & /*filterTodos, filter, todos*/ 25 && input_checked_value !== (input_checked_value = /*todo*/ ctx[15].completed)) {
     				prop_dev(input, "checked", input_checked_value);
     			}
 
-    			if (dirty & /*todos*/ 1 && t1_value !== (t1_value = /*todo*/ ctx[10].name + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*filterTodos, filter, todos*/ 25 && t1_value !== (t1_value = /*todo*/ ctx[15].name + "")) set_data_dev(t1, t1_value);
 
-    			if (dirty & /*todos*/ 1 && label_for_value !== (label_for_value = "todo-" + /*todo*/ ctx[10].id)) {
+    			if (dirty & /*filterTodos, filter, todos*/ 25 && label_for_value !== (label_for_value = "todo-" + /*todo*/ ctx[15].id)) {
     				attr_dev(label, "for", label_for_value);
     			}
 
-    			if (dirty & /*todos*/ 1 && t4_value !== (t4_value = /*todo*/ ctx[10].name + "")) set_data_dev(t4, t4_value);
-    			if (dirty & /*todos*/ 1 && t7_value !== (t7_value = /*todo*/ ctx[10].name + "")) set_data_dev(t7, t7_value);
+    			if (dirty & /*filterTodos, filter, todos*/ 25 && t4_value !== (t4_value = /*todo*/ ctx[15].name + "")) set_data_dev(t4, t4_value);
+    			if (dirty & /*filterTodos, filter, todos*/ 25 && t7_value !== (t7_value = /*todo*/ ctx[15].name + "")) set_data_dev(t7, t7_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(li);
@@ -655,7 +658,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(89:1) {#each todos as todo, index (todo.id)}",
+    		source: "(105:1) {#each filterTodos(filter, todos) as todo(todo.id)}",
     		ctx
     	});
 
@@ -679,6 +682,7 @@ var app = (function () {
     	let span1;
     	let t8;
     	let span2;
+    	let button1_aria_pressed_value;
     	let t10;
     	let button2;
     	let span3;
@@ -686,6 +690,7 @@ var app = (function () {
     	let span4;
     	let t14;
     	let span5;
+    	let button2_aria_pressed_value;
     	let t16;
     	let button3;
     	let span6;
@@ -693,6 +698,7 @@ var app = (function () {
     	let span7;
     	let t20;
     	let span8;
+    	let button3_aria_pressed_value;
     	let t22;
     	let h21;
     	let t23;
@@ -712,9 +718,9 @@ var app = (function () {
     	let button5;
     	let mounted;
     	let dispose;
-    	let each_value = /*todos*/ ctx[0];
+    	let each_value = /*filterTodos*/ ctx[4](/*filter*/ ctx[3], /*todos*/ ctx[0]);
     	validate_each_argument(each_value);
-    	const get_key = ctx => /*todo*/ ctx[10].id;
+    	const get_key = ctx => /*todo*/ ctx[15].id;
     	validate_each_keys(ctx, each_value, get_each_context, get_key);
 
     	for (let i = 0; i < each_value.length; i += 1) {
@@ -774,7 +780,7 @@ var app = (function () {
     			span8.textContent = "tasks";
     			t22 = space();
     			h21 = element("h2");
-    			t23 = text(/*completedTodos*/ ctx[3]);
+    			t23 = text(/*completedTodos*/ ctx[5]);
     			t24 = text(" out of ");
     			t25 = text(/*totalTodos*/ ctx[1]);
     			t26 = text(" items completed");
@@ -800,55 +806,58 @@ var app = (function () {
     			button5.textContent = "Remove completed";
     			attr_dev(label, "for", "todo-0");
     			attr_dev(label, "class", "label__lg");
-    			add_location(label, file, 36, 3, 671);
+    			add_location(label, file, 43, 3, 867);
     			attr_dev(h20, "class", "label-wrapper");
-    			add_location(h20, file, 35, 2, 641);
+    			add_location(h20, file, 42, 2, 837);
     			attr_dev(input, "type", "text");
     			attr_dev(input, "id", "todo-0");
     			attr_dev(input, "autocomplete", "off");
     			attr_dev(input, "class", "input input__lg");
-    			add_location(input, file, 40, 2, 759);
+    			add_location(input, file, 47, 2, 955);
     			attr_dev(button0, "type", "submit");
     			button0.disabled = "";
     			attr_dev(button0, "class", "btn btn__primary btn__lg");
-    			add_location(button0, file, 46, 5, 885);
-    			add_location(form, file, 34, 1, 597);
+    			add_location(button0, file, 53, 5, 1081);
+    			add_location(form, file, 41, 1, 793);
     			attr_dev(span0, "class", "visually-hidden");
-    			add_location(span0, file, 60, 3, 1147);
-    			add_location(span1, file, 61, 3, 1192);
+    			add_location(span0, file, 70, 3, 1434);
+    			add_location(span1, file, 71, 3, 1479);
     			attr_dev(span2, "class", "visually-hidden");
-    			add_location(span2, file, 62, 3, 1212);
+    			add_location(span2, file, 72, 3, 1499);
     			attr_dev(button1, "class", "btn toggle-btn");
-    			attr_dev(button1, "aria-pressed", "true");
-    			add_location(button1, file, 57, 2, 1085);
+    			attr_dev(button1, "aria-pressed", button1_aria_pressed_value = /*filter*/ ctx[3] === 'all');
+    			toggle_class(button1, "btn__primary", /*filter*/ ctx[3] === 'all');
+    			add_location(button1, file, 64, 2, 1281);
     			attr_dev(span3, "class", "visually-hidden");
-    			add_location(span3, file, 67, 3, 1331);
-    			add_location(span4, file, 68, 3, 1376);
+    			add_location(span3, file, 80, 3, 1718);
+    			add_location(span4, file, 81, 3, 1763);
     			attr_dev(span5, "class", "visually-hidden");
-    			add_location(span5, file, 69, 3, 1399);
+    			add_location(span5, file, 82, 3, 1786);
     			attr_dev(button2, "class", "btn toggle-btn");
-    			attr_dev(button2, "aria-pressed", "false");
-    			add_location(button2, file, 64, 2, 1269);
+    			attr_dev(button2, "aria-pressed", button2_aria_pressed_value = /*filter*/ ctx[3] === 'active');
+    			toggle_class(button2, "btn__primary", /*filter*/ ctx[3] === 'active');
+    			add_location(button2, file, 74, 2, 1556);
     			attr_dev(span6, "class", "visually-hidden");
-    			add_location(span6, file, 74, 3, 1518);
-    			add_location(span7, file, 75, 3, 1563);
+    			add_location(span6, file, 90, 3, 2014);
+    			add_location(span7, file, 91, 3, 2059);
     			attr_dev(span8, "class", "visually-hidden");
-    			add_location(span8, file, 76, 3, 1589);
+    			add_location(span8, file, 92, 3, 2085);
     			attr_dev(button3, "class", "btn toggle-btn");
-    			attr_dev(button3, "aria-pressed", "false");
-    			add_location(button3, file, 71, 2, 1456);
+    			attr_dev(button3, "aria-pressed", button3_aria_pressed_value = /*filter*/ ctx[3] === 'completed');
+    			toggle_class(button3, "btn__primary", /*filter*/ ctx[3] === 'completed');
+    			add_location(button3, file, 84, 2, 1843);
     			attr_dev(div0, "class", "filters btn-group stack-exception");
-    			add_location(div0, file, 56, 1, 1035);
+    			add_location(div0, file, 63, 1, 1231);
     			attr_dev(h21, "id", "list-heading");
-    			add_location(h21, file, 81, 1, 1676);
-    			add_location(ul, file, 86, 1, 1779);
-    			add_location(hr, file, 145, 1, 2868);
-    			add_location(button4, file, 149, 2, 2925);
-    			add_location(button5, file, 150, 2, 2954);
+    			add_location(h21, file, 97, 1, 2172);
+    			add_location(ul, file, 102, 1, 2275);
+    			add_location(hr, file, 161, 1, 3377);
+    			add_location(button4, file, 165, 2, 3434);
+    			add_location(button5, file, 166, 2, 3463);
     			attr_dev(div1, "class", "btn-group");
-    			add_location(div1, file, 148, 1, 2899);
+    			add_location(div1, file, 164, 1, 3408);
     			attr_dev(div2, "class", "todoapp stack-large");
-    			add_location(div2, file, 31, 0, 543);
+    			add_location(div2, file, 38, 0, 739);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -912,8 +921,11 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[6]),
-    					listen_dev(form, "submit", prevent_default(/*addTodo*/ ctx[5]), false, true, false)
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[8]),
+    					listen_dev(form, "submit", prevent_default(/*addTodo*/ ctx[7]), false, true, false),
+    					listen_dev(button1, "click", /*click_handler*/ ctx[9], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_1*/ ctx[10], false, false, false),
+    					listen_dev(button3, "click", /*click_handler_2*/ ctx[11], false, false, false)
     				];
 
     				mounted = true;
@@ -924,11 +936,35 @@ var app = (function () {
     				set_input_value(input, /*newTodoName*/ ctx[2]);
     			}
 
-    			if (dirty & /*completedTodos*/ 8) set_data_dev(t23, /*completedTodos*/ ctx[3]);
+    			if (dirty & /*filter*/ 8 && button1_aria_pressed_value !== (button1_aria_pressed_value = /*filter*/ ctx[3] === 'all')) {
+    				attr_dev(button1, "aria-pressed", button1_aria_pressed_value);
+    			}
+
+    			if (dirty & /*filter*/ 8) {
+    				toggle_class(button1, "btn__primary", /*filter*/ ctx[3] === 'all');
+    			}
+
+    			if (dirty & /*filter*/ 8 && button2_aria_pressed_value !== (button2_aria_pressed_value = /*filter*/ ctx[3] === 'active')) {
+    				attr_dev(button2, "aria-pressed", button2_aria_pressed_value);
+    			}
+
+    			if (dirty & /*filter*/ 8) {
+    				toggle_class(button2, "btn__primary", /*filter*/ ctx[3] === 'active');
+    			}
+
+    			if (dirty & /*filter*/ 8 && button3_aria_pressed_value !== (button3_aria_pressed_value = /*filter*/ ctx[3] === 'completed')) {
+    				attr_dev(button3, "aria-pressed", button3_aria_pressed_value);
+    			}
+
+    			if (dirty & /*filter*/ 8) {
+    				toggle_class(button3, "btn__primary", /*filter*/ ctx[3] === 'completed');
+    			}
+
+    			if (dirty & /*completedTodos*/ 32) set_data_dev(t23, /*completedTodos*/ ctx[5]);
     			if (dirty & /*totalTodos*/ 2) set_data_dev(t25, /*totalTodos*/ ctx[1]);
 
-    			if (dirty & /*removeTodo, todos*/ 17) {
-    				each_value = /*todos*/ ctx[0];
+    			if (dirty & /*removeTodo, filterTodos, filter, todos*/ 89) {
+    				each_value = /*filterTodos*/ ctx[4](/*filter*/ ctx[3], /*todos*/ ctx[0]);
     				validate_each_argument(each_value);
     				validate_each_keys(ctx, each_value, get_each_context, get_key);
     				each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, ul, destroy_block, create_each_block, null, get_each_context);
@@ -997,6 +1033,14 @@ var app = (function () {
     		$$invalidate(2, newTodoName = '');
     	}
 
+    	let filter = 'all';
+
+    	const filterTodos = (filter, todos) => filter === 'active'
+    	? todos.filter(t => !t.completed)
+    	: filter === 'completed'
+    		? todos.filter(t => t.completed)
+    		: todos;
+
     	const writable_props = ['todos'];
 
     	Object.keys($$props).forEach(key => {
@@ -1008,8 +1052,11 @@ var app = (function () {
     		$$invalidate(2, newTodoName);
     	}
 
-    	const click_handler = (todo, each_value, index) => $$invalidate(0, each_value[index].completed = !todo.completed, todos);
-    	const click_handler_1 = todo => removeTodo(todo);
+    	const click_handler = () => $$invalidate(3, filter = 'all');
+    	const click_handler_1 = () => $$invalidate(3, filter = 'active');
+    	const click_handler_2 = () => $$invalidate(3, filter = 'completed');
+    	const click_handler_3 = (todo, each_value, todo_index) => $$invalidate(4, each_value[todo_index].completed = !todo.completed, filterTodos, $$invalidate(3, filter), $$invalidate(0, todos));
+    	const click_handler_4 = todo => removeTodo(todo);
 
     	$$self.$$set = $$props => {
     		if ('todos' in $$props) $$invalidate(0, todos = $$props.todos);
@@ -1021,6 +1068,8 @@ var app = (function () {
     		newTodoId,
     		removeTodo,
     		addTodo,
+    		filter,
+    		filterTodos,
     		totalTodos,
     		completedTodos
     	});
@@ -1029,8 +1078,9 @@ var app = (function () {
     		if ('todos' in $$props) $$invalidate(0, todos = $$props.todos);
     		if ('newTodoName' in $$props) $$invalidate(2, newTodoName = $$props.newTodoName);
     		if ('newTodoId' in $$props) newTodoId = $$props.newTodoId;
+    		if ('filter' in $$props) $$invalidate(3, filter = $$props.filter);
     		if ('totalTodos' in $$props) $$invalidate(1, totalTodos = $$props.totalTodos);
-    		if ('completedTodos' in $$props) $$invalidate(3, completedTodos = $$props.completedTodos);
+    		if ('completedTodos' in $$props) $$invalidate(5, completedTodos = $$props.completedTodos);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -1043,7 +1093,7 @@ var app = (function () {
     		}
 
     		if ($$self.$$.dirty & /*todos*/ 1) {
-    			$$invalidate(3, completedTodos = todos.filter(todo => todo.completed).length);
+    			$$invalidate(5, completedTodos = todos.filter(todo => todo.completed).length);
     		}
 
     		if ($$self.$$.dirty & /*totalTodos, todos*/ 3) {
@@ -1061,12 +1111,17 @@ var app = (function () {
     		todos,
     		totalTodos,
     		newTodoName,
+    		filter,
+    		filterTodos,
     		completedTodos,
     		removeTodo,
     		addTodo,
     		input_input_handler,
     		click_handler,
-    		click_handler_1
+    		click_handler_1,
+    		click_handler_2,
+    		click_handler_3,
+    		click_handler_4
     	];
     }
 
