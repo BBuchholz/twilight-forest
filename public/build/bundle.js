@@ -97,6 +97,9 @@ var app = (function () {
     function add_render_callback(fn) {
         render_callbacks.push(fn);
     }
+    function add_flush_callback(fn) {
+        flush_callbacks.push(fn);
+    }
     let flushing = false;
     const seen_callbacks = new Set();
     function flush() {
@@ -257,6 +260,14 @@ var app = (function () {
                 throw new Error('Cannot have duplicate keys in a keyed each');
             }
             keys.add(key);
+        }
+    }
+
+    function bind(component, name, callback) {
+        const index = component.$$.props[name];
+        if (index !== undefined) {
+            component.$$.bound[index] = callback;
+            callback(component.$$.ctx[index]);
         }
     }
     function create_component(block) {
@@ -535,34 +546,34 @@ var app = (function () {
     			span8 = element("span");
     			span8.textContent = "tasks";
     			attr_dev(span0, "class", "visually-hidden");
-    			add_location(span0, file$1, 8, 4, 296);
-    			add_location(span1, file$1, 9, 4, 342);
+    			add_location(span0, file$1, 6, 4, 236);
+    			add_location(span1, file$1, 7, 4, 282);
     			attr_dev(span2, "class", "visually-hidden");
-    			add_location(span2, file$1, 10, 4, 363);
+    			add_location(span2, file$1, 8, 4, 303);
     			attr_dev(button0, "class", "btn toggle-btn");
     			attr_dev(button0, "aria-pressed", button0_aria_pressed_value = /*filter*/ ctx[0] === 'all');
     			toggle_class(button0, "btn__primary", /*filter*/ ctx[0] === 'all');
-    			add_location(button0, file$1, 7, 2, 158);
+    			add_location(button0, file$1, 5, 2, 98);
     			attr_dev(span3, "class", "visually-hidden");
-    			add_location(span3, file$1, 13, 4, 567);
-    			add_location(span4, file$1, 14, 4, 613);
+    			add_location(span3, file$1, 11, 4, 507);
+    			add_location(span4, file$1, 12, 4, 553);
     			attr_dev(span5, "class", "visually-hidden");
-    			add_location(span5, file$1, 15, 4, 637);
+    			add_location(span5, file$1, 13, 4, 577);
     			attr_dev(button1, "class", "btn toggle-btn");
     			attr_dev(button1, "aria-pressed", button1_aria_pressed_value = /*filter*/ ctx[0] === 'active');
     			toggle_class(button1, "btn__primary", /*filter*/ ctx[0] === 'active');
-    			add_location(button1, file$1, 12, 2, 420);
+    			add_location(button1, file$1, 10, 2, 360);
     			attr_dev(span6, "class", "visually-hidden");
-    			add_location(span6, file$1, 18, 4, 850);
-    			add_location(span7, file$1, 19, 4, 896);
+    			add_location(span6, file$1, 16, 4, 790);
+    			add_location(span7, file$1, 17, 4, 836);
     			attr_dev(span8, "class", "visually-hidden");
-    			add_location(span8, file$1, 20, 4, 923);
+    			add_location(span8, file$1, 18, 4, 863);
     			attr_dev(button2, "class", "btn toggle-btn");
     			attr_dev(button2, "aria-pressed", button2_aria_pressed_value = /*filter*/ ctx[0] === 'completed');
     			toggle_class(button2, "btn__primary", /*filter*/ ctx[0] === 'completed');
-    			add_location(button2, file$1, 17, 2, 694);
+    			add_location(button2, file$1, 15, 2, 634);
     			attr_dev(div, "class", "filters btn-group stack-exception");
-    			add_location(div, file$1, 6, 0, 108);
+    			add_location(div, file$1, 4, 0, 48);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -592,9 +603,9 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*click_handler*/ ctx[2], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_1*/ ctx[3], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_2*/ ctx[4], false, false, false)
+    					listen_dev(button0, "click", /*click_handler*/ ctx[1], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[2], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[3], false, false, false)
     				];
 
     				mounted = true;
@@ -649,12 +660,7 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('FilterButton', slots, []);
     	let { filter = 'all' } = $$props;
-
-    	let { onclick = clicked => {
-    		
-    	} } = $$props;
-
-    	const writable_props = ['filter', 'onclick'];
+    	const writable_props = ['filter'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<FilterButton> was created with unknown prop '${key}'`);
@@ -666,33 +672,25 @@ var app = (function () {
 
     	$$self.$$set = $$props => {
     		if ('filter' in $$props) $$invalidate(0, filter = $$props.filter);
-    		if ('onclick' in $$props) $$invalidate(1, onclick = $$props.onclick);
     	};
 
-    	$$self.$capture_state = () => ({ filter, onclick });
+    	$$self.$capture_state = () => ({ filter });
 
     	$$self.$inject_state = $$props => {
     		if ('filter' in $$props) $$invalidate(0, filter = $$props.filter);
-    		if ('onclick' in $$props) $$invalidate(1, onclick = $$props.onclick);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*onclick, filter*/ 3) {
-    			onclick(filter);
-    		}
-    	};
-
-    	return [filter, onclick, click_handler, click_handler_1, click_handler_2];
+    	return [filter, click_handler, click_handler_1, click_handler_2];
     }
 
     class FilterButton extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { filter: 0, onclick: 1 });
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { filter: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -709,14 +707,6 @@ var app = (function () {
     	set filter(value) {
     		throw new Error("<FilterButton>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
-
-    	get onclick() {
-    		throw new Error("<FilterButton>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set onclick(value) {
-    		throw new Error("<FilterButton>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
     }
 
     /* src/components/Todos.svelte generated by Svelte v3.43.1 */
@@ -730,7 +720,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (128:1) {:else}
+    // (126:1) {:else}
     function create_else_block(ctx) {
     	let t;
 
@@ -750,14 +740,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(128:1) {:else}",
+    		source: "(126:1) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (77:1) {#each filterTodos(filter, todos) as todo(todo.id)}
+    // (75:1) {#each filterTodos(filter, todos) as todo(todo.id)}
     function create_each_block(key_1, ctx) {
     	let li;
     	let div2;
@@ -821,28 +811,28 @@ var app = (function () {
     			attr_dev(input, "type", "checkbox");
     			attr_dev(input, "id", input_id_value = "todo-" + /*todo*/ ctx[13].id);
     			input.checked = input_checked_value = /*todo*/ ctx[13].completed;
-    			add_location(input, file, 84, 10, 1638);
+    			add_location(input, file, 82, 10, 1595);
     			attr_dev(label, "for", label_for_value = "todo-" + /*todo*/ ctx[13].id);
     			attr_dev(label, "class", "todo-label");
-    			add_location(label, file, 91, 10, 1826);
+    			add_location(label, file, 89, 10, 1783);
     			attr_dev(div0, "class", "c-cb");
-    			add_location(div0, file, 82, 8, 1608);
+    			add_location(div0, file, 80, 8, 1565);
     			attr_dev(span0, "class", "visually-hidden");
-    			add_location(span0, file, 106, 12, 2101);
+    			add_location(span0, file, 104, 12, 2058);
     			attr_dev(button0, "type", "button");
     			attr_dev(button0, "class", "btn");
-    			add_location(button0, file, 101, 10, 2011);
+    			add_location(button0, file, 99, 10, 1968);
     			attr_dev(span1, "class", "visually-hidden");
-    			add_location(span1, file, 117, 12, 2376);
+    			add_location(span1, file, 115, 12, 2333);
     			attr_dev(button1, "type", "button");
     			attr_dev(button1, "class", "btn btn__danger");
-    			add_location(button1, file, 110, 10, 2202);
+    			add_location(button1, file, 108, 10, 2159);
     			attr_dev(div1, "class", "btn-group");
-    			add_location(div1, file, 99, 8, 1966);
+    			add_location(div1, file, 97, 8, 1923);
     			attr_dev(div2, "class", "stack-small");
-    			add_location(div2, file, 80, 6, 1565);
+    			add_location(div2, file, 78, 6, 1522);
     			attr_dev(li, "class", "todo");
-    			add_location(li, file, 78, 4, 1534);
+    			add_location(li, file, 76, 4, 1491);
     			this.first = li;
     		},
     		m: function mount(target, anchor) {
@@ -906,7 +896,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(77:1) {#each filterTodos(filter, todos) as todo(todo.id)}",
+    		source: "(75:1) {#each filterTodos(filter, todos) as todo(todo.id)}",
     		ctx
     	});
 
@@ -924,6 +914,7 @@ var app = (function () {
     	let button0;
     	let t4;
     	let filterbutton;
+    	let updating_filter;
     	let t5;
     	let h21;
     	let t6;
@@ -945,14 +936,22 @@ var app = (function () {
     	let mounted;
     	let dispose;
 
+    	function filterbutton_filter_binding(value) {
+    		/*filterbutton_filter_binding*/ ctx[9](value);
+    	}
+
+    	let filterbutton_props = {};
+
+    	if (/*filter*/ ctx[3] !== void 0) {
+    		filterbutton_props.filter = /*filter*/ ctx[3];
+    	}
+
     	filterbutton = new FilterButton({
-    			props: {
-    				filter: /*filter*/ ctx[3],
-    				onclick: /*func*/ ctx[9]
-    			},
+    			props: filterbutton_props,
     			$$inline: true
     		});
 
+    	binding_callbacks.push(() => bind(filterbutton, 'filter', filterbutton_filter_binding));
     	let each_value = /*filterTodos*/ ctx[4](/*filter*/ ctx[3], /*todos*/ ctx[0]);
     	validate_each_argument(each_value);
     	const get_key = ctx => /*todo*/ ctx[13].id;
@@ -1026,13 +1025,13 @@ var app = (function () {
     			add_location(button0, file, 55, 5, 1133);
     			add_location(form, file, 43, 1, 845);
     			attr_dev(h21, "id", "list-heading");
-    			add_location(h21, file, 69, 1, 1362);
-    			add_location(ul, file, 74, 1, 1465);
-    			add_location(hr, file, 133, 1, 2567);
-    			add_location(button1, file, 137, 2, 2624);
-    			add_location(button2, file, 138, 2, 2653);
+    			add_location(h21, file, 67, 1, 1319);
+    			add_location(ul, file, 72, 1, 1422);
+    			add_location(hr, file, 131, 1, 2524);
+    			add_location(button1, file, 135, 2, 2581);
+    			add_location(button2, file, 136, 2, 2610);
     			attr_dev(div0, "class", "btn-group");
-    			add_location(div0, file, 136, 1, 2598);
+    			add_location(div0, file, 134, 1, 2555);
     			attr_dev(div1, "class", "todoapp stack-large");
     			add_location(div1, file, 40, 0, 791);
     		},
@@ -1092,8 +1091,13 @@ var app = (function () {
     			}
 
     			const filterbutton_changes = {};
-    			if (dirty & /*filter*/ 8) filterbutton_changes.filter = /*filter*/ ctx[3];
-    			if (dirty & /*filter*/ 8) filterbutton_changes.onclick = /*func*/ ctx[9];
+
+    			if (!updating_filter && dirty & /*filter*/ 8) {
+    				updating_filter = true;
+    				filterbutton_changes.filter = /*filter*/ ctx[3];
+    				add_flush_callback(() => updating_filter = false);
+    			}
+
     			filterbutton.$set(filterbutton_changes);
     			if (!current || dirty & /*completedTodos*/ 32) set_data_dev(t6, /*completedTodos*/ ctx[5]);
     			if (!current || dirty & /*totalTodos*/ 2) set_data_dev(t8, /*totalTodos*/ ctx[1]);
@@ -1195,7 +1199,11 @@ var app = (function () {
     		$$invalidate(2, newTodoName);
     	}
 
-    	const func = clicked => $$invalidate(3, filter = clicked);
+    	function filterbutton_filter_binding(value) {
+    		filter = value;
+    		$$invalidate(3, filter);
+    	}
+
     	const click_handler = (todo, each_value, todo_index) => $$invalidate(4, each_value[todo_index].completed = !todo.completed, filterTodos, $$invalidate(3, filter), $$invalidate(0, todos));
     	const click_handler_1 = todo => removeTodo(todo);
 
@@ -1259,7 +1267,7 @@ var app = (function () {
     		removeTodo,
     		addTodo,
     		input_input_handler,
-    		func,
+    		filterbutton_filter_binding,
     		click_handler,
     		click_handler_1
     	];
