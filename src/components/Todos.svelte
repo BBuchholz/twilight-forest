@@ -1,6 +1,7 @@
 <script>
 
 	import FilterButton from './FilterButton.svelte';
+	import Todo from './Todo.svelte';
 
 	export let todos = [];
 
@@ -68,66 +69,16 @@
 	<h2 id="list-heading">
 		{completedTodos} out of {totalTodos} items completed
 	</h2>
-
-	<!-- Todos -->
-	<ul>
 	
-	{#each filterTodos(filter, todos) as todo(todo.id)}
-    
-    <li class="todo">
-      
-      <div class="stack-small">
-        
-        <div class="c-cb">
-
-          <input 
-          	type="checkbox" 
-          	id="todo-{todo.id}" 
-          	on:click={() => todo.completed = !todo.completed}
-          	checked={todo.completed}
-        	/>
-
-          <label 
-          	for="todo-{todo.id}" 
-          	class="todo-label">
-            {todo.name}
-          </label>
-
-        </div>
-
-        <div class="btn-group">
-          
-          <button 
-          	type="button" 
-          	class="btn">
-
-            Edit 
-            <span class="visually-hidden">{todo.name}</span>
-          
-          </button>
-          
-          <button 
-          	type="button" 
-          	class="btn btn__danger"
-          	on:click={ () => removeTodo(todo) } 
-        	>
-            
-            Delete 
-            <span class="visually-hidden">{todo.name}</span>
-          
-          </button>
-        
-        </div>
-      
-      </div>
-    
-    </li>
-
-	{:else}
-	  Nothing to do here!
-	{/each}
+	<ul role="list" class="todo-list stack-large" aria-labelledby="list-heading">
+	  {#each filterTodos(filter, todos) as todo (todo.id)}
+	    <li class="todo">
+	      <Todo {todo} on:remove={ e => removeTodo(e.detail) } />
+	    </li>
+	  {:else}
+	    <li>Nothing to do here!</li>
+	  {/each}
 	</ul>
-
 
 	<hr />
 
