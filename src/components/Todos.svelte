@@ -23,6 +23,11 @@
   	todos = todos.filter(t => t.id !== todo.id);
   }
 
+  function updateTodo(todo) {
+    const i = todos.findIndex(t => t.id === todo.id)
+    todos[i] = { ...todos[i], ...todo }
+  }
+
   function addTodo() {
   	todos = [...todos, { id: newTodoId, name: newTodoName, completed: false }];
   	newTodoName = '';
@@ -73,7 +78,10 @@
 	<ul role="list" class="todo-list stack-large" aria-labelledby="list-heading">
 	  {#each filterTodos(filter, todos) as todo (todo.id)}
 	    <li class="todo">
-	      <Todo {todo} on:remove={ e => removeTodo(e.detail) } />
+	      <Todo {todo} 
+	      	on:remove={ e => removeTodo(e.detail) } 
+	      	on:update={ e => updateTodo(e.detail) } 
+      	/>
 	    </li>
 	  {:else}
 	    <li>Nothing to do here!</li>
